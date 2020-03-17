@@ -1,19 +1,21 @@
-import socket
+from cheesechain import CheeseChain
+from socket import socket, create_connection, gethostname, gethostbyname_ex
+from threading import Thread, Timer
 import pickle
+import os
+import time
 
-server=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-server.connect((socket.gethostname(),1234))
+ServerIP = "172.18.250.70"
+ServerPort=9876
 
-def get_peers():
-    message='A|'
-    server.send(message)
-    while True:
-        peer_list=server.recv(1024)
-        p=pickle.loads(peerlist)
-        print(p)
+IP = "172.18.250.70"
 
-get_peers()
-'''
+JoinNetworkProtocol="|J|"
+RequestClientProtocol="|C|"
+PingProtocol="|P|"
+TransmitCheese="|T|"
+RecieveCheese="|R|"
+
 
 HEADERSIZE=10
 
