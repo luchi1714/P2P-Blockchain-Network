@@ -1,6 +1,12 @@
 
 # Auto Evaluation
 
+### What works 
+
+### What doesnt work
+- Cheese chain has issues updating propely if two clients dont start at the same time. 
+- Longest chain in the sequence not considered 
+
 
 
 ## Compare the results to your initial objectives
