@@ -5,13 +5,13 @@ ___
 
 For the development of this project we used our variation of the Extreame programming approach. This approach seemed apporate for this project because we were a small team where initially most of us had a fairly vauge understanding of the technology or how to impliment it. We tried to adapt the timelines and delivaribles to everyones schedules concerning school work. To curbe the potential unproductivity this may have incured we checked in with each other about every 2 days or so. Overall our timelines and develerables changed a lot but the following is a rough draft. 
 
-**week 1** : Famalarize with blockchain and share new info and useful information with each other as much as possible
-**week 2-3** : Start coding the blockchain and understand its implimentatino without the P2P, understand P2P
-**week 4-5** : Work on protocol  and understand how to impliment a P2P network on its own.
-**week 6 -7 **: Code the tracker 
-**week 8**: clear doubts on the tracker with lecturer 
-**week 9 - 10** : Make necesary adjustments to the tracker  and fix bugs 
-**week 11** :  work on UI and Testing
+-**week 1** : Famalarize with blockchain and share new info and useful information with each other as much as possible
+-**week 2-3** : Start coding the blockchain and understand its implimentatino without the P2P, understand P2P
+-**week 4-5** : Work on protocol  and understand how to impliment a P2P network on its own.
+-**week 6 -7 **: Code the tracker 
+-**week 8**: clear doubts on the tracker with lecturer 
+-**week 9 - 10** : Make necesary adjustments to the tracker  and fix bugs 
+-**week 11** :  work on UI and Testing
 
 
 
