@@ -1,4 +1,4 @@
-# retrospective 
+# Retrospective 
 ___
 
 ## Organization of work and technologies 
@@ -8,8 +8,8 @@ For the development of this project we used our variation of the Extreame progra
 - **week 1** : Famalarize with blockchain and share new info and useful information with each other as much as possible
 - **week 2-3** : Start coding the blockchain and understand its implimentatino without the P2P, understand P2P
 - **week 4-5** : Work on protocol  and understand how to impliment a P2P network on its own.
-- **week 6 -7 **: Code the tracker 
-- **week 8**: clear doubts on the tracker with lecturer 
+- **week 6 -7** : Code the tracker 
+- **week 8** : clear doubts on the tracker with lecturer 
 - **week 9 - 10** : Make necesary adjustments to the tracker  and fix bugs 
 - **week 11** :  work on UI and Testing
 
