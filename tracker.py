@@ -146,21 +146,41 @@ def create_jobs():
 create_workers()
 create_jobs()
 
+################################################################""
+#Start working on a new tracker
 
-'''import socket
+import socket
+from socket import *
+from threading import Thread
+import random
+import time
 
-HEADERSIZE=10
-s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+ServerIP='192.168.0.27'
+ServerPort=9876
+MaxClient=5
 
-s.bind((socket.gethostname(),1234))
-s.listen(5)
+class Tracker:
+    def __init__(self):
+        self.ClientList=[]
 
-while True:
-    clientsocket,address=s.accept()
-    msg = "welcome to the server!"
-    msg= f'{len(msg):<{HEADERSIZE}}' + msg
-    print(f"COnnection from {address} has been established")
-
-    clientsocket.send(bytes(msg,"utf-8"))
-'''
+    def parcingtext(self,conn):
+        responce=b""
+        readFlag=False
+        while True:
+            r=conn.recv(1)
+            if len(r)==0:
+                return None
+            if r==b"\n" and readFlag:
+                break
+            if readFlag:
+                responce+=b"\r";
+            if r==b"\r":
+                readFlag=True;
+            else:
+                readFlag=False;
+                responce+=r;
+        try:
+            return responce.decode("utf-8")
+        except:
+            return responce
 
