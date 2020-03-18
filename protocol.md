@@ -25,7 +25,9 @@ A message will take the following format :
 |b     |block      |a block (bytes)                    |A block sent by a peer.|
 |r     |request    |ID                                 |The ID of the block requested by a peer from another peer. The expected answer is a `b`.|
 |e     |error      |Error message                      |The description of an error|
-|t     |transaction|To be defined                      |Transaction between users. 
+|t     |transaction|To be defined                      |Transaction between users. |
+|n     |transaction|To be defined                      |Transaction between users. 
+
 
 
 
