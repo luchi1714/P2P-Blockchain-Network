@@ -183,4 +183,35 @@ class Tracker:
             return responce.decode("utf-8")
         except:
             return responce
+    
+    def StartTracker(self):
+        def acceptAll():
+            TrackerSocket=socket()
+            TrackerSocket.bind((ServerIP,ServerPort))
+            TrackerSocket.listen()
+            while True:
+                conn,addr=TrackerSocket.accept()
+                self.Manager(conn,addr[0])
 
+    def CheckClientStatus():
+            while True:
+                print("Tracker status: Running")
+                for client in self.ClientList:
+                    try:
+                        ip = client.split(':')[0]
+                        port = int(client.split(':')[1])
+                        print("Pinging This Client", ip, port)
+                        conn = create_connection((ip, port))
+                        conn.sendall(b"|P|\r\n")
+                        line = self.parcingtext(conn)
+                        if line != "OK":
+                            print("Sending a ping request to:", ip, port, "Encountered a bad response: ", l)
+                        else:
+                            print("Sending a ping request to", ip, port, " good ping", l)
+                    except:
+                        print("Client Timeout", ip, port )
+                        #self.ClientList.remove(client)
+                time.sleep(60)
+
+        Thread(target=CheckClientStatus).start()
+        Thread(target=acceptAll).start()
