@@ -147,3 +147,48 @@ class Cheese:
 
   def __repr__(self):
     return "[Cheese"+str(self.id)+" "+self.data+"]"
+
+
+class CheeseChain:
+
+    GENESIS_Cheese = Cheese(0, "god genesis 5000", "0")
+
+    def __init__(self):
+        self.stack = [CheeseChain.GENESIS_Cheese]
+        
+    def createCheese(self, data):
+        lastid = self.stack[-1].id
+        lasthash = self.stack[-1].hash
+        cheese = Cheese(lastid + 1, data, lasthash)
+        if self.insertCheese(cheese):
+            return cheese
+        else:
+            return -1
+        
+    def insertCheese(self, cheese):
+        if cheese.hash != cheese.CalculateHash():
+            return False
+        if not cheese.hash.startswith("0" * cheese.HARDNESS):
+            return False
+        if cheese.id != self.stack[-1].id + 1:
+            return False
+        if cheese.prehash != self.stack[-1].hash:
+            return False
+        self.stack.append(cheese)
+        return True
+    
+    def CheeseID(self, id):
+        return self.stack[id]
+
+    def deleteCheese(self):
+        self.stack.pop()
+
+if __name__ == "__main__":
+    c = CheeseChain()
+    print(c.createCheese("genesis Sri 20"))
+    print(c.createCheese("Sri Shamprikta 4"))
+    print(c.createCheese("Shamprikta Guillaume 1"))
+
+    print(c)
+    c.deleteCheese()
+    print(c)
