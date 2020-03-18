@@ -115,3 +115,35 @@ class CheeseChain():
 
     self.uncomfirmed_transactions = []
     return True
+
+
+###############################################################################################""
+#Start designing a new CheeseChain that works with the new design of tracker/client.
+
+import hashlib
+
+class Cheese:
+  HARDNESS = 2
+
+  def __init__(self,id,data,prehash):
+    self.id=id
+    self.data=data
+    self.prehash=prehash
+    self.HashMining()
+
+  def HashMining(self):
+    self.nounce=0
+    self.hash=""
+    while not self.hash.startswith("0"*Cheese.HARDNESS):
+      self.nounce+=1
+      self.hash=self.CalculateHash()
+
+  def CalculateHash(self):
+    encCheese=(str(self.id)+
+              str(self.data)+
+              str(self.nounce)+
+              self.prehash).encode('utf-8')
+    return hashlib.sha1(encCheese).hexdigest()
+
+  def __repr__(self):
+    return "[Cheese"+str(self.id)+" "+self.data+"]"
