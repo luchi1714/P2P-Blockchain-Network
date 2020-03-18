@@ -2,14 +2,23 @@
 # Auto Evaluation
 
 ### What works 
+- Blockchain and mining blocks 
+- Clients  are able to send the ledger to other clients instead of it being distributed to everyone for scalibility . 
+- Functional UI
+- Addition of clients with unique IP addresses
+- Proof of work for verification is functional 
+- Protocol codes eg|P| to indicate delivery  works 
 
 ### What doesnt work
-- Cheese chain has issues updating propely if two clients dont start at the same time. 
+- Cheese chain has issues updating propely if two clients don't start at the same time. 
 - Longest chain in the sequence not considered 
+- Every client starts mining immediately there is no configuration to switch to a transactor without being a miner the program.
 
+## comparision of obtained results to  initial objectives
 
-
-## Compare the results to your initial objectives
+- Initially we aimed at haveing a transactor and a miner haveing the choice to switch mid session but that proved tricky
+- we also wanted a UI to make things easier for users which we were able to recieve . 
+- 
 
 
 ## Time and contribution 
