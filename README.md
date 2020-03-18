@@ -15,5 +15,5 @@ To run the program you can simply run the cheesechain.py , tracker.py, client.py
 Alternatively if you want to be a transactor  in addition to the other information mentioned you can add a transaction amount in the apporiate window then click on **Make Transaction**
 
 
-## Archetecture 
+## Architecture 
 
