@@ -182,6 +182,16 @@ class CheeseChain:
 
     def deleteCheese(self):
         self.stack.pop()
+        
+    def checkCheese(self):
+        prehash = CheeseChain.GENESIS_Cheese.hash
+        for cheese in self.stack[1:]:
+            if cheese.hash != cheese.CalculateHash():
+                return False
+            if cheese.prehash != prehash:
+                return False
+            prehash = cheese.hash
+        return True
 
 if __name__ == "__main__":
     c = CheeseChain()
@@ -192,3 +202,4 @@ if __name__ == "__main__":
     print(c)
     c.deleteCheese()
     print(c)
+    print(c.checkCheese())
