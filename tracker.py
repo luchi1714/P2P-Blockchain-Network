@@ -215,3 +215,32 @@ class Tracker:
 
         Thread(target=CheckClientStatus).start()
         Thread(target=acceptAll).start()
+        
+    def Manager(self,conn,ip):
+        def Manage():
+            line=self.parcingtext(conn)
+            if line=="|J|":
+                port=self.parcingtext(conn)
+                addr=ip+":"+port
+                if addr not in self.ClientList:
+                    self.ClientList.append(addr)
+                    print("Member added")
+                    conn.sendall(b"OK\r\n")
+
+            elif line=="|C|":
+                subset = [self.ClientList[i] for i in sorted(random.sample(range(len(self.ClientList)),
+                                                                            MaxClient if len(
+                                                                                self.ClientList) > MaxClient else len(
+                                                                                self.ClientList)))]
+                for i in subset:
+                    conn.sendall((i+"\r\n").encode('UTF-8'))
+                conn.sendall(b"END\r\n")
+
+            else:
+                conn.sendall(("BAD" + "\r\n").encode('UTF-8'))
+            conn.close()
+        Thread(target=Manage).start()
+
+if __name__=="__main__":
+    t=Tracker()
+    t.StartTracker()
