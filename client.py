@@ -1,21 +1,3 @@
-from cheesechain import CheeseChain
-from socket import socket, create_connection, gethostname, gethostbyname_ex
-from threading import Thread, Timer
-import pickle
-import os
-import time
-
-ServerIP = "172.18.250.70" #this part needs to be changed to your own IP 
-ServerPort=9876 # remember to add this to the UI 
-
-IP = "172.18.250.70" # This part needs to be changed to your own 
-
-JoinNetworkProtocol="|J|"
-RequestClientProtocol="|C|"
-PingProtocol="|P|"
-TransmitCheese="|T|"
-RecieveCheese="|R|"
-
 
 from cheesechain import CheeseChain
 from socket import socket, create_connection, gethostname, gethostbyname_ex
@@ -27,7 +9,7 @@ import time
 ServerIP = "81.250.246.39"
 ServerPort=9876
 
-IP = "81.250.246.39"  # Remember to change this to your own IP address
+IP = "81.250.246.39"
 
 JoinNetworkProtocol="|J|"
 RequestClientProtocol="|C|"
@@ -68,39 +50,35 @@ class Client:
             return responce.decode("utf-8")
         except:
             return responce
-        
- 
-    def StartTracker(self):
-        def acceptAll():
-            TrackerSocket=socket()
-            TrackerSocket.bind((ServerIP,ServerPort))
-            TrackerSocket.listen()
-            while True:
-                conn,addr=TrackerSocket.accept()
-                self.Manager(conn,addr[0])
 
-        def CheckClientStatus():
-            while True:
-                print("Tracker status: Running")
-                for client in self.ClientList:
-                    try:
-                        ip = client.split(':')[0]
-                        port = int(client.split(':')[1])
-                        print("Pinging This Client", ip, port)
-                        conn = create_connection((ip, port))
-                        conn.sendall(b"|P|\r\n")
-                        line = self.parcingtext(conn)
-                        if line != "OK":
-                            print("Sending a ping request to:", ip, port, "Encountered a bad response: ", l)
-                        else:
-                            print("Sending a ping request to", ip, port, " good ping", l)
-                    except:
-                        print("Client Timeout", ip, port )
-                        self.ClientList.remove(client)
-                time.sleep(60)
+    def startclient(self):
+        self.Loopflag = True
+        def runningclient():
+            self.JoinNetwork()
+            while True and self.Loopflag:
+                Thread(target=self.StoreCheese).start()
+                Thread(target=self.getblockchain).start()
+                time.sleep(30)
+        Thread(target=runningclient).start()
 
-        Thread(target=CheckClientStatus).start()
-        Thread(target=acceptAll).start()
+    def stopclient(self):
+        self.Loopflag = False
 
-        
-        
+    def Loadchainfromlocal(self):
+        try:
+            return pickle.load(open(self.path, "rb"))
+        except:
+            return CheeseChain()
+
+    def StoreCheese(self):
+        pickle.dump(self.cheeseChain, open(self.path, "wb"))
+
+    def JoinNetwork(self):
+        try:
+            conn = create_connection((ServerIP, ServerPort))
+            conn.sendall(b'|J|\r\n')  # TODO: send network ip?
+            conn.sendall(bytes(str(self.port) + '\r\n', 'utf-8'))
+            conn.close()
+            self.NetworkFlag = True
+        except Exception as e:
+            print("Error Client Joining the Network: ", e)
