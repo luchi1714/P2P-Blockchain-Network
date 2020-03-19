@@ -52,6 +52,9 @@ class CheeseChain:
             return False
         if cheese.prehash != self.stack[-1].hash:
             return False
+        if not self.BalanceCheck(cheese.data):
+            print("Chaeck balance error!")
+            return False
         self.stack.append(cheese)
         return True
     
@@ -70,6 +73,25 @@ class CheeseChain:
                 return False
             prehash = cheese.hash
         return True
+
+    def __repr__(self):
+        rp = "[chain"
+        for b in self.stack:
+            rp += " " + str(b)
+        return rp + "]"
+
+    def BalanceCheck(self, data):
+        AccountName = data.split()[0]
+        transactionAmount = int(data.split()[2])
+        CurrentBalance = 0
+        for b in self.stack:
+            # transfer to the client
+            if b.data.split()[1] == AccountName:
+                CurrentBalance = CurrentBalance + int(b.data.split()[2])
+            # transfer from the client
+            if b.data.split()[0] == AccountName:
+                CurrentBalance = CurrentBalance - int(b.data.split()[2])
+        return transactionAmount <= CurrentBalance
 
 if __name__ == "__main__":
     c = CheeseChain()
