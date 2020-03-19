@@ -24,7 +24,7 @@
 ## Time and contribution 
 
 - Guillaume Sacchetti : Cheesechain, Testing, Tracker  (47hrs)
-- Sri Kalidindi : Tracker , UI, Handline, Client ( 49hrs)
+- Sri Kalidindi : Tracker , UI, Handline, Client ( 53hrs)
 - Shampkrita Mehereene : Testing , Cheesechain(37hrs )
 - Oluchi Ibeneme : Client , Documentation(37 hrs) 
 
