@@ -82,3 +82,35 @@ class Client:
             self.NetworkFlag = True
         except Exception as e:
             print("Error Client Joining the Network: ", e)
+            
+      def get_peers(self):
+        try:
+            conn = create_connection((ServerIP, ServerPort))
+            conn.sendall(b"|C|\r\n")
+            print("SENT: Get Peer Request")
+            self.ClientList = []
+            while True:
+                l = self.parcingtext(conn)
+                if l == "END":
+                    break
+                else:
+                    if (l == IP + ':' + str(self.port)):  # ignore self
+                        continue
+                    self.ClientList.append(l)
+            print("Received Clients: ", self.ClientList)
+
+        except Exception as e:
+            print("Error While receiving Client List: ", e)
+
+    def startListening(self):
+        listenerSocket = socket()
+        listenerSocket.bind((IP, self.port))
+        listenerSocket.listen()
+        print("Client Socket is Listening", self.port)
+        def listenerThread():
+            while True:
+                conn, addr = listenerSocket.accept()
+                print("Handling the Connection", addr)
+                Thread(target=self.ClientService, args=(conn,)).start()
+        Thread(target=listenerThread).start()
+
