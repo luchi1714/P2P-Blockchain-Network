@@ -1,4 +1,5 @@
 
+
 from cheesechain import CheeseChain
 from socket import socket, create_connection, gethostname, gethostbyname_ex
 from threading import Thread, Timer
@@ -82,8 +83,8 @@ class Client:
             self.NetworkFlag = True
         except Exception as e:
             print("Error Client Joining the Network: ", e)
-            
-      def get_peers(self):
+
+    def get_peers(self):
         try:
             conn = create_connection((ServerIP, ServerPort))
             conn.sendall(b"|C|\r\n")
@@ -114,3 +115,101 @@ class Client:
                 Thread(target=self.ClientService, args=(conn,)).start()
         Thread(target=listenerThread).start()
 
+    def ClientService(self, conn):
+        l = self.parcingtext(conn)
+        print("RECIEVED: ", l)
+
+        if l == "|P|":
+            conn.sendall(b"OK\r\n")
+            print("SENT: OK")
+
+        if l == "|T|":
+            blkdump = self.parcingtext(conn)
+            blk = pickle.loads(blkdump)
+            print("RECEIVED Cheese: ", blk)
+            if len(self.cheeseChain.stack) != blk.id:
+                print("SENT: DROP Command")
+                conn.sendall(b"DROP\r\n")
+            else:
+                status = self.cheeseChain.insertCheese(blk)
+                if status:
+                    print("SENT: OK Command")
+                    conn.sendall(b"OK\r\n")
+                else:
+                    print("SENT: INVALID Command")
+                    conn.sendall(b"INVALID\r\n")
+
+        if l == "|R|":
+            id = self.parcingtext(conn)
+            id = int(id)
+            print("RECIEVED: ", id)
+            if len(self.cheeseChain.stack) > id:
+                blkdump = pickle.dumps(self.cheeseChain.stack[id])
+                conn.sendall(blkdump)
+                conn.sendall(b"\r\n")
+                print("SENT Cheese: ", self.cheeseChain.stack[id])
+            else:
+                conn.sendall(b"NONE\r\n")
+                print("SENT: NONE")
+
+        conn.close()
+        print("Connection Closed")
+
+    def getblockchain(self):
+        self.get_peers()
+        for mem in self.ClientList:
+            ip, port = mem.split(":")
+            fetchid = str(len(self.cheeseChain.stack))
+            try:
+                conn = create_connection((ip, port))
+                conn.sendall(b'|R|\r\n')
+                print("SENT: GETCheese Request")
+                conn.sendall(bytes(fetchid + '\r\n', 'utf-8'))
+                print("SENT: ", fetchid)
+                response = self.parcingtext(conn)
+                conn.close()
+                if response == "NONE":
+                    print("RECIEVED: NONE")
+                    continue
+                else:
+                    blk = pickle.loads(response)
+                    print("RECIEVED Cheese: ", blk)
+                    status = self.cheeseChain.insertCheese(blk)
+                    if status:
+                        print("Cheese added!")
+                    else:
+                        print("Cheese ignored!")
+            except Exception as e:
+                print("Error While Searching for Cheeses: ", e)
+
+    def bradcastchain(self, id):
+        def broadcasterThread():
+            self.get_peers()
+            blkdump = pickle.dumps(self.cheeseChain.stack[id])
+            for mem in self.ClientList:
+                ip, port = mem.split(":")
+                try:
+                    conn = create_connection((ip, port))
+                    conn.sendall(b'|T|\r\n')
+                    print("SENT: Cheese")
+                    conn.sendall(blkdump)
+                    conn.sendall(b"\r\n")
+                    print("SENT Cheese:", self.cheeseChain.stack[id])
+                    response = self.parcingtext(conn)
+                    print("RECIVED: ", response)
+                    conn.close()
+                    self.NetworkFlag = True
+                except Exception as e:
+                    print("Error While Broadcasting: ", e)
+
+        Thread(target=broadcasterThread).start()
+
+
+if __name__ == "__main__":
+    from random import randint
+
+    mem = Client(randint(1000, 8999))
+    mem.startclient()
+    mem.startListening()
+    # mem.cheeseChain.createBlock("new block 1")
+    # mem.cheeseChain.createBlock("new block 2")
