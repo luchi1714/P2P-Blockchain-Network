@@ -1,7 +1,7 @@
 
 from cheesechain import CheeseChain
-from socket import socket, create_connection, gethostname, gethostbyname_ex
-from threading import Thread, Timer
+from socket import socket, create_connection
+from threading import Thread
 import pickle
 import os
 import time
@@ -29,28 +29,6 @@ class Client:
         self.NetworkFlag = False
         self.cheeseChain = self.Loadchainfromlocal()
 
-
-    def parcingtext(self,conn):
-        responce=b""
-        readFlag=False
-        while True:
-            r = conn.recv(1)
-            if len(r)==0:
-                return None
-            if r==b"\n" and readFlag:
-                break
-            if readFlag:
-                responce += b"\r";
-            if r == b"\r":
-                readFlag = True;
-            else:
-                readFlag=False;
-                responce += r;
-        try:
-            return responce.decode("utf-8")
-        except:
-            return responce
-
     def startclient(self):
         self.Loopflag = True
         def runningclient():
@@ -73,10 +51,31 @@ class Client:
     def StoreCheese(self):
         pickle.dump(self.cheeseChain, open(self.path, "wb"))
 
+    def parcingtext(self,conn):
+        responce=b""
+        readFlag=False
+        while True:
+            r = conn.recv(1)
+            if len(r)==0:
+                return None
+            if r==b"\n" and readFlag:
+                break
+            if readFlag:
+                responce += b"\r";
+            if r == b"\r":
+                readFlag = True;
+            else:
+                readFlag=False;
+                responce += r;
+        try:
+            return responce.decode("utf-8")
+        except:
+            return responce
+
     def JoinNetwork(self):
         try:
             conn = create_connection((ServerIP, ServerPort))
-            conn.sendall(b'|J|\r\n')  # TODO: send network ip?
+            conn.sendall(b'|J|\r\n')
             conn.sendall(bytes(str(self.port) + '\r\n', 'utf-8'))
             conn.close()
             self.NetworkFlag = True
@@ -96,7 +95,7 @@ class Client:
                 else:
                     if (l == IP + ':' + str(self.port)):
                         print((l == IP + ':' + str(self.port)))
-                        print("from server client list", l)
+                        print("From Server Client List", l)
                         continue
                     self.ClientList.append(l)
             print("Received Clients: ", self.ClientList)
@@ -118,15 +117,15 @@ class Client:
 
     def ClientService(self, conn):
         l = self.parcingtext(conn)
-        print("RECIEVED: ", l)
+        print("RECEIVED: ", l)
 
         if l == "|P|":
             conn.sendall(b"OK\r\n")
             print("SENT: OK")
 
         if l == "|T|":
-            blkdump = self.parcingtext(conn)
-            blk = pickle.loads(blkdump)
+            cheesedmp = self.parcingtext(conn)
+            blk = pickle.loads(cheesedmp)
             print("RECEIVED Cheese: ", blk)
             if len(self.cheeseChain.stack) != blk.id:
                 print("SENT: DROP Command")
@@ -143,10 +142,10 @@ class Client:
         if l == "|R|":
             id = self.parcingtext(conn)
             id = int(id)
-            print("RECIEVED: ", id)
+            print("RECEIVED: ", id)
             if len(self.cheeseChain.stack) > id:
-                blkdump = pickle.dumps(self.cheeseChain.stack[id])
-                conn.sendall(blkdump)
+                cheesedmp = pickle.dumps(self.cheeseChain.stack[id])
+                conn.sendall(cheesedmp)
                 conn.sendall(b"\r\n")
                 print("SENT Cheese: ", self.cheeseChain.stack[id])
             else:
@@ -158,8 +157,8 @@ class Client:
 
     def getblockchain(self):
         self.get_peers()
-        for mem in self.ClientList:
-            ip, port = mem.split(":")
+        for clt in self.ClientList:
+            ip, port = clt.split(":")
             print("This ip and port",ip,port)
             fetchid = str(len(self.cheeseChain.stack))
             try:
@@ -171,11 +170,11 @@ class Client:
                 resp = self.parcingtext(conn)
                 conn.close()
                 if resp == "NONE":
-                    print("RECIEVED: NONE")
+                    print("RECEIVED: NONE")
                     continue
                 else:
                     blk = pickle.loads(resp)
-                    print("RECIEVED Cheese: ", blk)
+                    print("RECEIVED Cheese: ", blk)
                     status = self.cheeseChain.insertCheese(blk)
                     if status:
                         print("Cheese added!")
@@ -187,18 +186,18 @@ class Client:
     def bradcastchain(self, id):
         def broadcasterThread():
             self.get_peers()
-            blkdump = pickle.dumps(self.cheeseChain.stack[id])
+            cheesedmp = pickle.dumps(self.cheeseChain.stack[id])
             for mem in self.ClientList:
                 ip, port = mem.split(":")
                 try:
                     conn = create_connection((ip, port))
                     conn.sendall(b'|T|\r\n')
                     print("SENT: Cheese")
-                    conn.sendall(blkdump)
+                    conn.sendall(cheesedmp)
                     conn.sendall(b"\r\n")
                     print("SENT Cheese:", self.cheeseChain.stack[id])
                     resp = self.parcingtext(conn)
-                    print("RECIVED: ", resp)
+                    print("RECEIVED: ", resp)
                     conn.close()
                     self.NetworkFlag = True
                 except Exception as e:
@@ -209,9 +208,7 @@ class Client:
 
 if __name__ == "__main__":
     from random import randint
-
     mem = Client(randint(1000, 8999))
     mem.startclient()
     mem.startListening()
-    # mem.cheeseChain.createBlock("new block 1")
-    # mem.cheeseChain.createBlock("new block 2")
+

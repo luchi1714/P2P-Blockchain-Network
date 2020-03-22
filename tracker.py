@@ -12,6 +12,39 @@ class Tracker:
     def __init__(self):
         self.ClientList=[]
 
+
+    def StartTracker(self):
+        def acceptAll():
+            TrackerSocket=socket()
+            TrackerSocket.bind((ServerIP,ServerPort))
+            TrackerSocket.listen()
+            while True:
+                conn,addr=TrackerSocket.accept()
+                self.Manager(conn,addr[0])
+
+        def CheckClientStatus():
+            while True:
+                print("Tracker Status: Running")
+                for client in self.ClientList:
+                    try:
+                        ip = client.split(':')[0]
+                        port = int(client.split(':')[1])
+                        print("Pinging This Client", ip, port)
+                        conn = create_connection((ip, port))
+                        conn.sendall(b"|P|\r\n")
+                        line = self.parcingtext(conn)
+                        if line != "OK":
+                            print("Sending a Ping request to:", ip, port, "Encountered a BAD response: ", line)
+                        else:
+                            print("Sending a Ping request to", ip, port, "Good Ping", line)
+                    except:
+                        print("Client Timeout", ip, port )
+                        #self.ClientList.remove(client)
+                time.sleep(60)
+
+        Thread(target=CheckClientStatus).start()
+        Thread(target=acceptAll).start()
+
     def parcingtext(self,conn):
         responce=b""
         readFlag=False
@@ -33,38 +66,6 @@ class Tracker:
         except:
             return responce
 
-    def StartTracker(self):
-        def acceptAll():
-            TrackerSocket=socket()
-            TrackerSocket.bind((ServerIP,ServerPort))
-            TrackerSocket.listen()
-            while True:
-                conn,addr=TrackerSocket.accept()
-                self.Manager(conn,addr[0])
-
-        def CheckClientStatus():
-            while True:
-                print("Tracker status: Running")
-                for client in self.ClientList:
-                    try:
-                        ip = client.split(':')[0]
-                        port = int(client.split(':')[1])
-                        print("Pinging This Client", ip, port)
-                        conn = create_connection((ip, port))
-                        conn.sendall(b"|P|\r\n")
-                        line = self.parcingtext(conn)
-                        if line != "OK":
-                            print("Sending a ping request to:", ip, port, "Encountered a bad response: ", l)
-                        else:
-                            print("Sending a ping request to", ip, port, " good ping", l)
-                    except:
-                        print("Client Timeout", ip, port )
-                        #self.ClientList.remove(client)
-                time.sleep(60)
-
-        Thread(target=CheckClientStatus).start()
-        Thread(target=acceptAll).start()
-
 
     def Manager(self,conn,ip):
         def Manage():
@@ -74,7 +75,7 @@ class Tracker:
                 addr=ip+":"+port
                 if addr not in self.ClientList:
                     self.ClientList.append(addr)
-                    print("Member added")
+                    print("Member added",ip,port)
                     conn.sendall(b"OK\r\n")
 
             elif line=="|C|":
@@ -82,7 +83,7 @@ class Tracker:
                                                                             MaxClient if len(
                                                                                 self.ClientList) > MaxClient else len(
                                                                                 self.ClientList)))]
-                print("client list is",self.ClientList)
+                print("Client list is",self.ClientList)
                 for i in subset:
                     conn.sendall((i+"\r\n").encode('UTF-8'))
                 conn.sendall(b"END\r\n")
