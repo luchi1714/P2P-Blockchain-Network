@@ -1,5 +1,4 @@
 
-
 from cheesechain import CheeseChain
 from socket import socket, create_connection, gethostname, gethostbyname_ex
 from threading import Thread, Timer
@@ -7,10 +6,10 @@ import pickle
 import os
 import time
 
-ServerIP = "81.250.246.39"
+ServerIP = "172.18.250.104"
 ServerPort=9876
 
-IP = "81.250.246.39"
+IP = "172.18.250.104"
 
 JoinNetworkProtocol="|J|"
 RequestClientProtocol="|C|"
@@ -35,18 +34,18 @@ class Client:
         responce=b""
         readFlag=False
         while True:
-            r=conn.recv(1)
+            r = conn.recv(1)
             if len(r)==0:
                 return None
             if r==b"\n" and readFlag:
                 break
             if readFlag:
-                responce+=b"\r";
-            if r==b"\r":
-                readFlag=True;
+                responce += b"\r";
+            if r == b"\r":
+                readFlag = True;
             else:
                 readFlag=False;
-                responce+=r;
+                responce += r;
         try:
             return responce.decode("utf-8")
         except:
@@ -95,7 +94,9 @@ class Client:
                 if l == "END":
                     break
                 else:
-                    if (l == IP + ':' + str(self.port)):  # ignore self
+                    if (l == IP + ':' + str(self.port)):
+                        print((l == IP + ':' + str(self.port)))
+                        print("from server client list", l)
                         continue
                     self.ClientList.append(l)
             print("Received Clients: ", self.ClientList)
@@ -159,6 +160,7 @@ class Client:
         self.get_peers()
         for mem in self.ClientList:
             ip, port = mem.split(":")
+            print("This ip and port",ip,port)
             fetchid = str(len(self.cheeseChain.stack))
             try:
                 conn = create_connection((ip, port))
@@ -166,13 +168,13 @@ class Client:
                 print("SENT: GETCheese Request")
                 conn.sendall(bytes(fetchid + '\r\n', 'utf-8'))
                 print("SENT: ", fetchid)
-                response = self.parcingtext(conn)
+                resp = self.parcingtext(conn)
                 conn.close()
-                if response == "NONE":
+                if resp == "NONE":
                     print("RECIEVED: NONE")
                     continue
                 else:
-                    blk = pickle.loads(response)
+                    blk = pickle.loads(resp)
                     print("RECIEVED Cheese: ", blk)
                     status = self.cheeseChain.insertCheese(blk)
                     if status:
@@ -195,8 +197,8 @@ class Client:
                     conn.sendall(blkdump)
                     conn.sendall(b"\r\n")
                     print("SENT Cheese:", self.cheeseChain.stack[id])
-                    response = self.parcingtext(conn)
-                    print("RECIVED: ", response)
+                    resp = self.parcingtext(conn)
+                    print("RECIVED: ", resp)
                     conn.close()
                     self.NetworkFlag = True
                 except Exception as e:

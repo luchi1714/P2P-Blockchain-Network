@@ -4,7 +4,7 @@ from threading import Thread
 import random
 import time
 
-ServerIP='192.168.0.27'
+ServerIP='172.18.250.104'
 ServerPort=9876
 MaxClient=5
 
@@ -32,7 +32,7 @@ class Tracker:
             return responce.decode("utf-8")
         except:
             return responce
-    
+
     def StartTracker(self):
         def acceptAll():
             TrackerSocket=socket()
@@ -42,7 +42,7 @@ class Tracker:
                 conn,addr=TrackerSocket.accept()
                 self.Manager(conn,addr[0])
 
-    def CheckClientStatus():
+        def CheckClientStatus():
             while True:
                 print("Tracker status: Running")
                 for client in self.ClientList:
@@ -64,7 +64,8 @@ class Tracker:
 
         Thread(target=CheckClientStatus).start()
         Thread(target=acceptAll).start()
-        
+
+
     def Manager(self,conn,ip):
         def Manage():
             line=self.parcingtext(conn)
@@ -81,10 +82,10 @@ class Tracker:
                                                                             MaxClient if len(
                                                                                 self.ClientList) > MaxClient else len(
                                                                                 self.ClientList)))]
+                print("client list is",self.ClientList)
                 for i in subset:
                     conn.sendall((i+"\r\n").encode('UTF-8'))
                 conn.sendall(b"END\r\n")
-
             else:
                 conn.sendall(("BAD" + "\r\n").encode('UTF-8'))
             conn.close()
@@ -93,3 +94,4 @@ class Tracker:
 if __name__=="__main__":
     t=Tracker()
     t.StartTracker()
+

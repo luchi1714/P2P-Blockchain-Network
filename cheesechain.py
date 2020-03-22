@@ -1,3 +1,4 @@
+
 import hashlib
 
 class Cheese:
@@ -33,7 +34,7 @@ class CheeseChain:
 
     def __init__(self):
         self.stack = [CheeseChain.GENESIS_Cheese]
-        
+
     def createCheese(self, data):
         lastid = self.stack[-1].id
         lasthash = self.stack[-1].hash
@@ -42,7 +43,7 @@ class CheeseChain:
             return cheese
         else:
             return -1
-        
+
     def insertCheese(self, cheese):
         if cheese.hash != cheese.CalculateHash():
             return False
@@ -53,17 +54,17 @@ class CheeseChain:
         if cheese.prehash != self.stack[-1].hash:
             return False
         if not self.BalanceCheck(cheese.data):
-            print("Chaeck balance error!")
+            print("check balance error!")
             return False
         self.stack.append(cheese)
         return True
-    
+
     def CheeseID(self, id):
         return self.stack[id]
 
     def deleteCheese(self):
         self.stack.pop()
-        
+
     def checkCheese(self):
         prehash = CheeseChain.GENESIS_Cheese.hash
         for cheese in self.stack[1:]:
@@ -92,6 +93,7 @@ class CheeseChain:
             if b.data.split()[0] == AccountName:
                 CurrentBalance = CurrentBalance - int(b.data.split()[2])
         return transactionAmount <= CurrentBalance
+
 
 if __name__ == "__main__":
     c = CheeseChain()
