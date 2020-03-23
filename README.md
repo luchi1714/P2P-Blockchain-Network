@@ -9,10 +9,22 @@ Here clients would connect to a  tracker which would then send them a ledger con
 
 ##  How to build, run, and test your project
 
-To build the program simply download all files to the computer.  In the client.py folder change the   ` ServerIP ` variable to your own IP address or whichever computer you desire to be set as the server . Next set the `IP` variable to the one of your computer.  Repeat the same process for the tracker.py file then set the desired number of users  by changing the variable `MaxClient` .
-To test the program all these variables can be adjusted including the variable `ServerPort`.
-To run the program you can simply run the cheesechain.py , tracker.py, client.py then the ClientConsole.py file . In the UI enter the information asked eg port number  or Account Name etc then click on start client. From here  the client will be able  to start mining . In order to see the cheese chain click on  **Print Cheese Chain** at the top of the UI.  
-Alternatively if you want to be a transactor  in addition to the other information mentioned you can add a transaction amount in the apporiate window then click on **Make Transaction**
+1. Download all files in the repository . 
+2. In the tracker.py file change the  ` ServerIP ` variable to your own IP address or whichever computer you desire to be set as the server. In this same file you can set your desired number of maximum clients by my changing the variable `MaxClient`.
+3. Set the `IP` variable in the client.py folder to the one of your computer and in this same file change the 'ServerIP' variable to the the same IP address that was set in the tracker.py file.
+
+4. To run the program you can simply run the cheesechain.py , tracker.py, client.py then the ClientConsole.py file . 
+5. In the GUI  enter a port number( it can be any 4 digit number). If testing multiple clients even if it's on the same computer ensur that they have diferent port numbers.
+
+6. To start mining, directly click on "Start Client".  You may click on "Stop client" when you desire to stop.
+
+7. To create a transaction that will be mined into a block enter your account name, transaction ID  and an amount. 
+
+
+
+
+
+
 
 
 ## Architecture 
