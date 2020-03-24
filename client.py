@@ -133,13 +133,13 @@ class Client:
 
         if l == "|T|":
             cheesedmp = self.parcingtext(conn)
-            blk = pickle.loads(cheesedmp)
-            print("RECEIVED Cheese: ", blk)
-            if len(self.cheeseChain.stack) != blk.id:
+            chs = pickle.loads(cheesedmp)
+            print("RECEIVED Cheese: ", chs)
+            if len(self.cheeseChain.stack) != chs.id:
                 print("SENT: DROP Command")
                 conn.sendall(b"|D|\r\n")
             else:
-                status = self.cheeseChain.insertCheese(blk)
+                status = self.cheeseChain.insertCheese(chs)
                 if status:
                     print("SENT: OK Command")
                     conn.sendall(b"|O|\r\n")

@@ -2,7 +2,7 @@
 import hashlib
 
 class Cheese:
-  HARDNESS = 2
+  HARDNESS = 4
 
   def __init__(self,id,data,prehash):
     self.id=id
@@ -25,7 +25,7 @@ class Cheese:
     return hashlib.sha1(encCheese).hexdigest()
 
   def __repr__(self):
-    return "[Cheese "+str(self.id)+" "+self.data+ + " " + self.hash +"]"
+    return "[Cheese "+str(self.id)+" "+self.data+" "+str(self.hash)+"]"
 
 
 class CheeseChain:
