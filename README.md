@@ -20,6 +20,10 @@ The main focus of this project concerned implementing a blockchain using a P2P n
 
 7. To create a transaction that will be mined into a block enter your account name, transaction ID and an amount the click on the *Make Transaction*.
 
+8. To view the cheesechain click on *print Cheesechain* at the top of the UI. 
+
+9. Click on *Stop Client* when you wish to stop mining. 
+
 
 ## interpretation of messages on the client console
 
