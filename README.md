@@ -78,7 +78,21 @@ The client also loads an block which may be stored locally with the `Loadchainfr
  
  
  
+ ## References 
  
+ 
+ - satwikkansal, 01-2020, Develop a blockchain application from scratch in Python, https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/, License : Not specified. 
+
+- Hosam, Osama 01-2020, Simple blockchain implemented with python, https://github.com/satwikkansal/python_blockchain_app/tree/ibm_blockchain_post, Lisence : Not Specified
+
+- Hosam, Osama. "Hiding Bitcoins in Steganographic Fractals." 2018 IEEE International Symposium on Signal Processing and Information Technology (ISSPIT). IEEE, 2018.
+ - TWATY/ZAKARYA/ZARRIA/BELAIHOU ,03-2018 , 2018-net-jhttps://github.com/UJM-INFO/2018-net-j, License: NOt specified
+
+- Attreya Bhatt, 12-2018, Python Network Programming 7 - Python Socket client ( Socket Programming ), https://github.com/attreyabhatt/Reverse-Shell Lisence : Not specified 
+ 
+
+
+
  
  
  
