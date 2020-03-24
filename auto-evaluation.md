@@ -42,4 +42,18 @@ All of the recommendations were followed in this section.
 - ## Testing
 - we have done unit testing where we created 3 clients manually and checked if it works as mentioned above
 - we have also created a TestCheeseChain.py where for 12 seconds creates a Cheese and transmits it, TestCheeseChain.py can be run in multiple instances with different port numbers. we have tested it with 2 instances and it works.
+#### How to run Test:
+##### Setup:
+- Select port number
+- Select number of loops in Max_iterations
+
+##### Run:
+-Run different instances of TestCheeseChain with different port numbers and with time.sleep() of 30 secounds
+we are not saturating the network and blocks are able to transmit
+
+##### What this test does:
+-This test makes looping transactions between User1 and User2 for Max_iteration times
+
+
+'''
 **TBU on this**
