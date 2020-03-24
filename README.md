@@ -20,12 +20,35 @@ Here clients would connect to a  tracker which would then send them a ledger con
 
 7. To create a transaction that will be mined into a block enter your account name, transaction ID  and an amount. 
 
-
-
-
-
-
+    ## intrepretation of messages on the client consel 
+    client socket is listerning  - joined the tracker successfully and is now  waiting for the cheesechain. Initially the genesis block will be loaded from the file containing prexisting information. For the purpose of diagnosis "True" will  be printed on the 3rd line when the program initially starts running to inicate that other clients have joined the tracker. 
+    Recieved : |R| -As mentioned in the protocol R indicated that a block has been recieved. Initially the genesis block will be broadcasted and thus this recieve message should appear in the UI.  
+    SENT: *some number *  - this indicates how many blocks have been added to the chain.
 
 
 ## Architecture 
+
+Client consol - 
+when the * start client button * is clicked on in the GUI the `start_clt()` function is executed in the ClientConsol.py file.  On the client.py file this initializes all the cheese and cheese chains.The next function that is called upon clicking this button  `clt.startListerning()` , this function points to the `startListerning()` function in client.py . This function creates a socket and binds it self and starts listerning for connections. THis function has 2 threads: 
+  *  `listenerThread` -  listerns for the `startListerning` function 
+  * `ClientService`  -  Calls the function `ClientService `  to parse the data from other clients.  In  the `ClientService` function we also reference the ` parcingtext(self,conn)` function which helps us do so.  from here the ` parcingtext(self,conn)` function  reads all the data until "/r" then packages it together to send to other functions. "\n" in this function stops reading this data and moves on to other data. The `ClientService(self,conn)` function gets information from  ` parcingtext(self,conn)` . 
+ In ` parcingtext(self,conn)`  the reception of a `|P|` is indicative to a ping request and a  `|T|` is indicative of transmitting a block ie if someone is sending a block. `|R|` is indicative of a request form another client to send the block. 
+
+
+Making a transaction : 
+
+After the necessary information has been entered into this field and the " Make Transaction" button is clicked we pass it into the client.py then the cheesechain.py file and the function `createCheese(self, data)` is called where the cheese is created. upon reception of the data we create the `lastid` by incrementing the number of cheese in the chain. In this function the hash is also calculated and the cheese is created by joining the incremented `lastid`, `data` and `lasthash`.
+
+After the cheese is created various varificatons will be carried out in ` insertCheese(self, cheese)` where the hasd and id is verified , and ` BalanceCheck(self, data)` to verify if the transactor has made a valid transaction ie if the transactor has enough money .  It is important to note tha in the genesis block we have prebuilt 5000$  recieved from `God` (whichever you believe in, alternatively you could have won a lottery or found the pot of gold at the end of the rainbow, either way it's your lucky day and you have 5000 whoros in you account) as  prebuilt. 
+
+
+
+
+
+
+
+
+
+
+
 
