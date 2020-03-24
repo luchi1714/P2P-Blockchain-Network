@@ -17,18 +17,18 @@ A message will take the following format :
 `l` is a letter that will indicate the expected action to the receiving  side. Example: `p` would be a ping, `b`  for sending a block etc.
 
 
-|letter|meaning          |structure of the associated message|description|
-|------|-----------------|-----------------------------------|-----------|
-|J     |Join Network     |example: 127.0.0.1:8000            |The tracker (server) sends a valid IP address to the client. It sends all the known IP addresses to the new client, however each of them are sent in a new message.|
-|C     |Client List            |a block (bytes)                    |A block sent by a peer.|
-|P     |Ping          |ID                                 |The ID of the block requested by a peer from another peer. The expected answer is a `b`.|
-|T     |Transmit Cheese            |Error message                      |The description of an error|
-|R     |Receive Cheese      |To be defined                      |Transaction between users. |
-|O     |Okay      |To be defined                      |Transaction between users. 
-|E     |End
-|D     |Drop Cheese
-|I     |Invalid Cheese
-|N     |None received
+|letter|Abrevation          |Who sends it     |Who receives it   |Usage      |content of msg    |Meaning                                                            |Format of the message          |
+|------|--------------------|-----------------|------------------|-----------|------------------|-------------------------------------------------------------------|-------------------------------|
+|J     |Join Network        |Client           |Tracker           |Once       |None              |to join the network                                                |list as ip and port            |
+|C     |Client List         |Tracker          |Client            |multiple   |List of clients   |contains list of active clients.                                   |list of clients ip:port        |
+|P     |Ping                |Tracker          |Client            |multiple   |\r\n              |to check if a client is active                                     |string                         |
+|T     |Transmit Cheese     |Client           |Client            |multiple   |Cheese            |Sending cheese                                                     |python object using pickle     |
+|R     |Receive Cheese      |Client           |Client            |multiple   |Cheese            |Receiving cheese                                                   |python object using pickle     |
+|O     |Okay                |Tracker,Client   |Tracker,Client    |multiple   |None              |to let if the cheese is okay                                       |string                         |
+|E     |End                 |Tracker          |Client            |multiple   |None              |end of the client list                                             |string                         |
+|D     |Drop Cheese         |Client           |Client            |multiple   |None              |to let other clients that this client dropped cheese               |string                         |
+|I     |Invalid Cheese      |Client           |Client            |multiple   |None              |to let other clients know that we received invalid cheese          |string                         |
+|N     |None received       |Client           |Client            |multiple   |None              |a way to tell other clients we dont have what you are looking for  |string                         |
 ### The Tracker
 
 There are one possibility on connection:
