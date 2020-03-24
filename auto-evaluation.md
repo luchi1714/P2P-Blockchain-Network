@@ -10,7 +10,7 @@
 - Protocol codes eg|O| to indicate delivery works 
 
 ### What doesnt work
-- If a particular client lags behind there is no contingency to update the CheeseChain of the client
+- If a particular client lags behind there is no contingency in place to update the CheeseChain of the client
 - Longest chain in the sequence not considered 
 - Every client starts mining immediately there is no configuration to switch to a transactor without being a miner the program.
 - Tracker pings the clients to know whether they are still connected and removes them if not, there is a bug in the program we are still working on this, so for now client pings and records the active clients but doesn't remove if he is not active.
@@ -25,7 +25,7 @@
 ## Time and contribution 
 
 - Guillaume Sacchetti : Cheesechain, Testing, Tracker  (47hrs)
-- Sri Kalidindi : Tracker , UI, Handline, Client ( 53hrs)
+- Sri Kalidindi : Tracker , UI, Handling, Client ( 53hrs)
 - Shampkrita Mehereene : Testing , Cheesechain(37hrs )
 - Oluchi Ibeneme : Client , Documentation(37 hrs) 
 
@@ -34,7 +34,7 @@
 - ### Git
 For the most part our program is not more than 10 MB in size keeping with the recommendations. 
 English was used as the language of expression in every aspect of the process. For the most part 
-Descriptive commit messages were used to describe the contribution from each member . Commits were ususally made when a significant 
+Descriptive commit messages were used to describe the contribution from each member . Commits were usually made when a significant 
 change was made to the code from someone . 
 - ### Code
 All of the recommendations were followed in this section.

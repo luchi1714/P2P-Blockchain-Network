@@ -6,28 +6,27 @@ import pickle
 import os
 import time
 
-ServerIP = "172.18.250.104"
-ServerPort=9876
+ServerIP = "172.18.250.104" #Ip of the tracker
+ServerPort=9876             #Port of the tracker
 
-IP = "172.18.250.104"
+IP = "172.18.250.104"      #Ip of this client
 
+
+#Below are the commands for the protocol
 JoinNetworkProtocol="|J|"
 RequestClientListProtocol="|C|"
 PingProtocol="|P|"
 TransmitCheese="|T|"
 RecieveCheese="|R|"
-
 OkayProtocol="|O|"
 EndProtocol="|E|"
-
 DropProtocol="|D|"
 InvalidProtocol="|I|"
-
 NoneProtocol="|N|"
 
 
 class Client:
-    CHAIN_PATH = str(os.path.expanduser("~")) + "/.chain/"
+    CHAIN_PATH = str(os.path.expanduser("~")) + "/CheeseChain/.chain/"
     os.makedirs(CHAIN_PATH, exist_ok=True)
 
     def __init__(self, port=1112):
@@ -36,7 +35,9 @@ class Client:
         self.ClientList = []
         self.NetworkFlag = False
         self.cheeseChain = self.Loadchainfromlocal()
-
+    '''Function to start client and search for local cheese and cheese from 
+    other clients
+    '''
     def startclient(self):
         self.Loopflag = True
         def runningclient():
@@ -46,19 +47,22 @@ class Client:
                 Thread(target=self.getblockchain).start()
                 time.sleep(30)
         Thread(target=runningclient).start()
-
+    #Function to stop client
     def stopclient(self):
         self.Loopflag = False
 
+    #Function to load chain from local storage
     def Loadchainfromlocal(self):
         try:
             return pickle.load(open(self.path, "rb"))
         except:
             return CheeseChain()
 
+    #Function to store cheese in the local storage
     def StoreCheese(self):
         pickle.dump(self.cheeseChain, open(self.path, "wb"))
 
+    #Function to parce text \r represents end of command \n represents end of data
     def parcingtext(self,conn):
         responce=b""
         readFlag=False
@@ -80,6 +84,7 @@ class Client:
         except:
             return responce
 
+    #Function to join network from client to tracker
     def JoinNetwork(self):
         try:
             conn = create_connection((ServerIP, ServerPort))
@@ -90,6 +95,9 @@ class Client:
         except Exception as e:
             print("Error Client Joining the Network: ", e)
 
+    '''Function to get clients from tracker.
+       Client requests tracker for the active list and tracker responds with that list 
+    '''
     def get_peers(self):
         try:
             conn = create_connection((ServerIP, ServerPort))
@@ -111,6 +119,7 @@ class Client:
         except Exception as e:
             print("Error While receiving Client List: ", e)
 
+    '''Function to define threads to start this client to listen to other clients'''
     def startListening(self):
         listenerSocket = socket()
         listenerSocket.bind((IP, self.port))
@@ -123,14 +132,15 @@ class Client:
                 Thread(target=self.ClientService, args=(conn,)).start()
         Thread(target=listenerThread).start()
 
+    #Function to serve for the requests from other clients
     def ClientService(self, conn):
         l = self.parcingtext(conn)
         print("RECEIVED: ", l)
-
+        #ping request
         if l == "|P|":
             conn.sendall(b"|O|\r\n")
             print("SENT: OK")
-
+        #Transmission cheese request
         if l == "|T|":
             cheesedmp = self.parcingtext(conn)
             chs = pickle.loads(cheesedmp)
@@ -146,7 +156,7 @@ class Client:
                 else:
                     print("SENT: INVALID Command")
                     conn.sendall(b"|I|\r\n")
-
+        #Receiving control for cheese
         if l == "|R|":
             id = self.parcingtext(conn)
             id = int(id)
@@ -163,6 +173,7 @@ class Client:
         conn.close()
         print("Connection Closed")
 
+    #Functionto get block chain from other clients
     def getblockchain(self):
         self.get_peers()
         for clt in self.ClientList:
@@ -191,6 +202,7 @@ class Client:
             except Exception as e:
                 print("Error While Searching for Cheeses: ", e)
 
+    #Function to broadcast a cheese when a new cheese is created
     def bradcastchain(self, id):
         def broadcasterThread():
             self.get_peers()

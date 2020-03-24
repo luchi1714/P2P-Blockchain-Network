@@ -12,7 +12,7 @@ class Tracker:
     def __init__(self):
         self.ClientList=[]
 
-
+    #Function to start tracker an accept all incomming connections
     def StartTracker(self):
         def acceptAll():
             TrackerSocket=socket()
@@ -21,7 +21,8 @@ class Tracker:
             while True:
                 conn,addr=TrackerSocket.accept()
                 self.Manager(conn,addr[0])
-
+        '''Function to check if a client is active by pinging each client and updating the 
+        active list'''
         def CheckClientStatus():
             while True:
                 print("Tracker Status: Running")
@@ -41,10 +42,10 @@ class Tracker:
                         print("Client Timeout", ip, port )
                         #self.ClientList.remove(client)
                 time.sleep(60)
-
+        #Two threads for accepting new connections and checking client status
         Thread(target=CheckClientStatus).start()
         Thread(target=acceptAll).start()
-
+    #Function to parse the input commands \r \n represents end of command and \n for end of data
     def parcingtext(self,conn):
         responce=b""
         readFlag=False
@@ -66,7 +67,7 @@ class Tracker:
         except:
             return responce
 
-
+    #Function to serve clients on Join Network requests and active client list requests
     def Manager(self,conn,ip):
         def Manage():
             line=self.parcingtext(conn)

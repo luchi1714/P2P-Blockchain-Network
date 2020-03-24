@@ -2,7 +2,7 @@
 import hashlib
 
 class Cheese:
-  HARDNESS = 4
+  HARDNESS = 4 #This is the parameter to choose to set difficult is to mine the block
 
   def __init__(self,id,data,prehash):
     self.id=id
@@ -10,6 +10,9 @@ class Cheese:
     self.prehash=prehash
     self.HashMining()
 
+  '''This function is to mine the possinle hash it keeps 
+  incrementing nounce and tries if it is the solution with appropriate zeros
+  if not it tries again incrementing nounce'''
   def HashMining(self):
     self.nounce=0
     self.hash=""
@@ -29,12 +32,12 @@ class Cheese:
 
 
 class CheeseChain:
-
+    #Genesis cheese from zero cheese to geneisis
     GENESIS_Cheese = Cheese(0, "CheeseZero genesis 50000", "0")
 
     def __init__(self):
         self.stack = [CheeseChain.GENESIS_Cheese]
-
+    '''Function to create cheese append last cheese hash from the stack'''
     def createCheese(self, data):
         lastid = self.stack[-1].id
         lasthash = self.stack[-1].hash
@@ -43,7 +46,12 @@ class CheeseChain:
             return cheese
         else:
             return -1
-
+    '''Function to insert cheese if the following parameters are satisfied 
+    if hash is valid - if the hash is correct by decrypting the hash and verifies
+    if hash starts with the required number of zeros
+    if cheese is the latest one from the stack
+    if the prehash is really the hash of the last block
+    if the balance of the payer has a block associated with the appropriate balance in the cheese stack'''
     def insertCheese(self, cheese):
         if cheese.hash != cheese.CalculateHash():
             return False
@@ -59,12 +67,15 @@ class CheeseChain:
         self.stack.append(cheese)
         return True
 
+    #Function which returns cheese by id
     def CheeseID(self, id):
         return self.stack[id]
 
+    #Fucntion to delete cheese
     def deleteCheese(self):
         self.stack.pop()
 
+    #Function first cheese for troubleshooting purpose
     def checkCheese(self):
         prehash = CheeseChain.GENESIS_Cheese.hash
         for cheese in self.stack[1:]:
@@ -75,12 +86,14 @@ class CheeseChain:
             prehash = cheese.hash
         return True
 
+
     def __repr__(self):
         rp = "[CheeseChain"
         for b in self.stack:
             rp += " " + str(b)
         return rp + "]"
 
+    #This function goes through all the cheeses and verifies if the payer has the enough balance from the cheeses in the stack
     def BalanceCheck(self, data):
         AccountName = data.split()[0]
         transactionAmount = int(data.split()[2])
