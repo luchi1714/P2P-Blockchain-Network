@@ -14,11 +14,11 @@ The main focus of this project concerned implementing a blockchain using a P2P n
 
 4. To run the program you can simply run the *cheesechain.py*, *tracker.py*, *client.py* then the *ClientConsole.py* file.
 
-5.In the GUI enter a port number( it can be any 4 digit number). If testing multiple clients even if it's on the same computer ensure that they have different port numbers.
+5. In the GUI enter a port number( it can be any 4 digit number). If testing multiple clients even if it's on the same computer ensure that they have different port numbers.
 
 6. To start mining, directly click on * "Start Client"*. You may click on "Stop client" when you desire to stop.
 
-7.To create a transaction that will be mined into a block enter your account name, transaction ID and an amount the click on the *Make Transaction*.
+7. To create a transaction that will be mined into a block enter your account name, transaction ID and an amount the click on the *Make Transaction*.
 
 
 ## interpretation of messages on the client console
