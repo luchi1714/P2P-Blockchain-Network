@@ -3,21 +3,21 @@
 
 ### What works 
 - Blockchain and mining blocks 
-- Clients are able to send the ledger to other clients instead of it being distributed to everyone for scalability . 
+- Clients are able to send the latest Cheese to atmost 5(can be changed in tracker.py) clients instead of it being broadcasting to everyone for scalability . 
 - Functional UI
 - Addition of clients with unique Port
-- Proof of work for verification is functional 
-- Protocol codes eg|O| to indicate delivery works 
-- Tracker can connect peers and broadcast chain
+- Proof of work for verification is functional(embedded in CheeseChain.py)
+- Protocol codes eg|O| to indicate delivery works
+- Tracker can connect peers and update the active clients.
 
 ### What doesnt work
-- If a particular client lags behind there is no contingency in place to update the CheeseChain of the client
-- Every client starts mining immediately there is no configuration to switch to a transactor without being a miner the program.
+- If a particular client lags behind a point for say 3 Cheeses, there is no contingency in place to update the CheeseChain of the client
+- Every client starts mining immediately there is no configuration to switch to a transactor without being a miner the program, so there is no modes only to be a miner or a transactor
 
 ## comparision of obtained results to  initial objectives
 
-- Initially we aimed at having a transactor and a miner having the choice to switch mid session but that proved tricky
-- we also wanted a UI to make things easier for users which we were able to achieve . 
+- Initially we aimed at having a transactor and a miner modes having the choice to switch mid session but that proved tricky
+- we also wanted a UI to make things easier for users which we were able to achieve. 
 - We were not able to use length constrained which was previously designed in out protocol.
 
 

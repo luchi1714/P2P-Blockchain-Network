@@ -31,8 +31,8 @@ A message will take the following format :
 |N     |None received       |Client           |Client            |multiple   |None              |a way to tell other clients we dont have what you are looking for  |string                         |
 ### The Tracker
 
-There are one possibility on connection:
-- Client's IP addresses are obtained directly from the tracker maximum of 5(as default but can be changed): then client connects to these maximum number of clients . 
+There is only one possibility of connection:
+- Peer IP's addresses are obtained directly from the tracker maximum of 5(as default but can be changed): then client connects to these maximum number of clients . 
 
 Tracker sends the IP address to the newly connected client.
 
@@ -43,13 +43,12 @@ If a peer requests a block, the other peer can answer by sending the requested b
 ```
 This means a peer does not have the block requested.
 
-When a peer finished mining, it sends a `b` message to every connected peers with the new block.
+When a peer finished mining, it sends a `|N|` message to every connected peers with the new block.
 
 ### Malicious peers detection
 
 What is considered as malicious:
-- Invalid Cheese
-- Invalid message
+- Invalid Cheese |I|
 
 A peer will be disconnected from the other side of the connection.
 
