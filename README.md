@@ -6,6 +6,8 @@
 The main focus of this project concerned implementing a blockchain using a P2P network architecture. Here clients would connect to a tracker which would then send them a ledger containing the last block mined and other clients connected to the network. Each block contains a cryptographic hash of the previous block, a timestamp, and transaction data. The clients connected would then send the blocks to other clients that are connected to them.
 
 ## How to build, run, and test your project
+
+### How to Build and run
 1. Download all files in the repository.
 
 2. In the *tracker.py* file change the `ServerIP` variable to your IP address or whichever computer you desire to be set as the server. In this same file, you can set your desired number of maximum clients by my changing the variable `MaxClient`.
