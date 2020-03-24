@@ -12,10 +12,18 @@ ServerPort=9876
 IP = "172.18.250.104"
 
 JoinNetworkProtocol="|J|"
-RequestClientProtocol="|C|"
+RequestClientListProtocol="|C|"
 PingProtocol="|P|"
 TransmitCheese="|T|"
 RecieveCheese="|R|"
+
+OkayProtocol="|O|"
+EndProtocol="|E|"
+
+DropProtocol="|D|"
+InvalidProtocol="|I|"
+
+NoneProtocol="|N|"
 
 
 class Client:
@@ -90,7 +98,7 @@ class Client:
             self.ClientList = []
             while True:
                 l = self.parcingtext(conn)
-                if l == "END":
+                if l == "|E|":
                     break
                 else:
                     if (l == IP + ':' + str(self.port)):
@@ -120,7 +128,7 @@ class Client:
         print("RECEIVED: ", l)
 
         if l == "|P|":
-            conn.sendall(b"OK\r\n")
+            conn.sendall(b"|O|\r\n")
             print("SENT: OK")
 
         if l == "|T|":
@@ -129,15 +137,15 @@ class Client:
             print("RECEIVED Cheese: ", blk)
             if len(self.cheeseChain.stack) != blk.id:
                 print("SENT: DROP Command")
-                conn.sendall(b"DROP\r\n")
+                conn.sendall(b"|D|\r\n")
             else:
                 status = self.cheeseChain.insertCheese(blk)
                 if status:
                     print("SENT: OK Command")
-                    conn.sendall(b"OK\r\n")
+                    conn.sendall(b"|O|\r\n")
                 else:
                     print("SENT: INVALID Command")
-                    conn.sendall(b"INVALID\r\n")
+                    conn.sendall(b"|I|\r\n")
 
         if l == "|R|":
             id = self.parcingtext(conn)
@@ -149,7 +157,7 @@ class Client:
                 conn.sendall(b"\r\n")
                 print("SENT Cheese: ", self.cheeseChain.stack[id])
             else:
-                conn.sendall(b"NONE\r\n")
+                conn.sendall(b"|N|\r\n")
                 print("SENT: NONE")
 
         conn.close()
@@ -169,7 +177,7 @@ class Client:
                 print("SENT: ", fetchid)
                 resp = self.parcingtext(conn)
                 conn.close()
-                if resp == "NONE":
+                if resp == "|N|":
                     print("RECEIVED: NONE")
                     continue
                 else:

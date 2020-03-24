@@ -30,7 +30,7 @@ class Cheese:
 
 class CheeseChain:
 
-    GENESIS_Cheese = Cheese(0, "god genesis 5000", "0")
+    GENESIS_Cheese = Cheese(0, "CheeseZero genesis 50000", "0")
 
     def __init__(self):
         self.stack = [CheeseChain.GENESIS_Cheese]

@@ -33,7 +33,7 @@ class Tracker:
                         conn = create_connection((ip, port))
                         conn.sendall(b"|P|\r\n")
                         line = self.parcingtext(conn)
-                        if line != "OK":
+                        if line != "|O|":
                             print("Sending a Ping request to:", ip, port, "Encountered a BAD response: ", line)
                         else:
                             print("Sending a Ping request to", ip, port, "Good Ping", line)
@@ -76,7 +76,7 @@ class Tracker:
                 if addr not in self.ClientList:
                     self.ClientList.append(addr)
                     print("Member added",ip,port)
-                    conn.sendall(b"OK\r\n")
+                    conn.sendall(b"|O|\r\n")
 
             elif line=="|C|":
                 subset = [self.ClientList[i] for i in sorted(random.sample(range(len(self.ClientList)),
@@ -86,7 +86,7 @@ class Tracker:
                 print("Client list is",self.ClientList)
                 for i in subset:
                     conn.sendall((i+"\r\n").encode('UTF-8'))
-                conn.sendall(b"END\r\n")
+                conn.sendall(b"|E|\r\n")
             else:
                 conn.sendall(("BAD" + "\r\n").encode('UTF-8'))
             conn.close()
