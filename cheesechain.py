@@ -25,7 +25,7 @@ class Cheese:
     return hashlib.sha1(encCheese).hexdigest()
 
   def __repr__(self):
-    return "[Cheese "+str(self.id)+" "+self.data+"]"
+    return "[Cheese "+str(self.id)+" "+self.data+ + " " + self.hash +"]"
 
 
 class CheeseChain:
@@ -100,7 +100,3 @@ if __name__ == "__main__":
     print(c.createCheese("genesis Sri 20"))
     print(c.createCheese("Sri Shamprikta 4"))
     print(c.createCheese("Shamprikta Guillaume 1"))
-    print(c)
-    c.deleteCheese()
-    print(c)
-    print(c.checkCheese())
