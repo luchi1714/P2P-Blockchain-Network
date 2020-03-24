@@ -8,17 +8,16 @@
 - Addition of clients with unique Port
 - Proof of work for verification is functional 
 - Protocol codes eg|O| to indicate delivery works 
+- Tracker can connect peers and broadcast chain
 
 ### What doesnt work
 - If a particular client lags behind there is no contingency in place to update the CheeseChain of the client
-- Longest chain in the sequence not considered 
 - Every client starts mining immediately there is no configuration to switch to a transactor without being a miner the program.
-- Tracker pings the clients to know whether they are still connected and removes them if not, there is a bug in the program we are still working on this, so for now client pings and records the active clients but doesn't remove if he is not active.
 
 ## comparision of obtained results to  initial objectives
 
 - Initially we aimed at having a transactor and a miner having the choice to switch mid session but that proved tricky
-- we also wanted a UI to make things easier for users which we were able to received . 
+- we also wanted a UI to make things easier for users which we were able to achieve . 
 - We were not able to use length constrained which was previously designed in out protocol.
 
 
