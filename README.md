@@ -10,7 +10,7 @@ The main focus of this project concerned implementing a blockchain using a P2P n
 ### How to Build and run
 1. Download all files in the repository.
 
-2. In the *tracker.py* file change the `ServerIP` variable to your IP address or whichever computer you desire to be set as the server. In this same file, you can set your desired number of maximum clients by my changing the variable `MaxClient`.
+2. In the *tracker.py* file change the `ServerIP` variable to your IP address or whichever computer you desire to be set as the server. In this same file, you can set your desired number of maximum clients by my changing the variable `MaxClien`.
 
 3. Set the IP variable in the *client.py* file to the one of your computer and in this same file change the 'ServerIP' variable to the same IP address that was set in the *tracker.py* file.
 
@@ -46,3 +46,40 @@ The main focus of this project concerned implementing a blockchain using a P2P n
 - Making a transaction :
 After the necessary information has been entered into this field and the *" Make Transaction"* button is clicked, we pass it into the *client.py* then the *cheesechain.py* file and the function `createCheese(self, data)` is called where the cheese is created. upon reception of the data, we create the `lastid` by incrementing the number of cheese in the chain. In this function, the hash is also calculated and the cheese is created by joining the incremented `lastid`, data and `lasthash`.
 After the cheese is created various verifications will be carried out in `insertCheese(self, cheese)` where the hash and id is verified, and `BalanceCheck(self, data)` to verify if the transactor has made a valid transaction ie if the transactor has enough money. It is important to note that in the genesis block we have prebuilt 5000$ received from God (whichever one you believe in, alternatively you could have won a lottery or found the pot of gold at the end of the rainbow, either way, it's your lucky day and you have 5000 whoros in you account :) ) prebuilt.
+ 
+ 
+ - viewing the cheese chain : 
+ when the button * Print cheesechain * is clicked, in order to show the cheese chain the function is passed through *client.py* and then to *cheesechain.py* to return information on the chain. 
+ 
+ 
+ ## Client
+ 
+ 
+ The client file is responisble for controlling how the clients are listerned to throught the `parcingtext(self,conn)` function as mentioned before. In addition to ths it also stores the curent blockchain into the current memory every ten seconds through the storecheese thread in the `startclient(self)` function. This same function also implimetns the getblockchain thread every 10 seconds which calls the `getblockchain(self)`.  In this function, for every  active client in recieve the latest stack id  and request to connect with them and request the ltest block .  The blockchain is accepted if it is more than the one we have, otherwise it is ignored else an error is printed. The blocks are coordinated between clinet through their ID's .Every client has a stack of ID's and it retrieves the topmost ID and compares it with the others onthe network to identify the longest and the longest one is then broadcasted. In summary one thread stores the chain in the local memory and the other gets the chain from the other clints, these two threads run every 10 seconds. 
+ 
+ The client joins the netword by calling the `JoinNetwork(self)` and  sends the letter |J| to the tracker to requests to join the network and get the client list  and the trackers client list is also updated.  in addition to this the client also broadcasts its latest block to other clients with the `bradcastchain(self, id)` function. 
+ 
+ 
+ 
+The client also loads an block which may be stored locally with the `Loadchainfromlocal(self)` function. if bugs are incountered during running the program it must be insure that there are no locally stored blocks as they may clash with the new ones being created. the client also 
+ 
+ 
+ ##  CheeseChain
+ 
+ this is the main block chain portion of the program . This file is responsible for creation of blocks, insertion of blocks into the chain and verification of blocks and transactions. 
+ 
+ 
+ 
+ 
+ 
+ ## Tracker 
+ This part o the program is responsible for accepting clients to the network, sharing the client list of connected peers and  also constanty checks for connected peers in the network. The tracker s also responsible for checking if peers are still connectd to the network by sening |P| which is a ping request to 5 random peers. If there is no response from a client they are dropped. The tracker also uses a parsing function just like the client because they will have to communicate with each other
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
