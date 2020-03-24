@@ -31,16 +31,15 @@ A message will take the following format :
 |N     |None received
 ### The Tracker
 
-There are two possibilities on connection:
-- Client's IP address is obtained directly from the server: in this case the communication carries on as usual. 
-- Client's IP address isn't obtained: in this case the tracker must ask the client for an IP address. The client first sends a message with its' IP address and a connection is then opened by the tracker with the given address to verify  its' validity. The stream finally opens with the sent IP address as the main stream (if everything is ok).
+There are one possibility on connection:
+- Client's IP addresses are obtained directly from the tracker maximum of 5(as default but can be changed): then client connects to these maximum number of clients . 
 
 Tracker sends the IP address to the newly connected client.
 
 ### Peers
 If a peer requests a block, the other peer can answer by sending the requested block if it has it. Otherwise, it will send :
 ```
-|b|0000|
+|T|
 ```
 This means a peer does not have the block requested.
 
@@ -49,7 +48,7 @@ When a peer finished mining, it sends a `b` message to every connected peers wit
 ### Malicious peers detection
 
 What is considered as malicious:
-- Invalid block
+- Invalid Cheese
 - Invalid message
 
 A peer will be disconnected from the other side of the connection.
@@ -57,22 +56,20 @@ A peer will be disconnected from the other side of the connection.
 
 ## Blockchain
 
-Each block will be stored in a separate  file:
+whole block chain will be stored in a file:
 ```
-block_id.blk
+port_number.blk
 ```
-The `ID` must be replaced by the number of the block.
+The `port_number` corresponds to the port number of the client.
 
 ### Block file
-The first line of the file will contain the ID of the block (identical to the one found in the file name).
+The first part of the file will contain the ID of the block (identical to the one found in the file name).
 
-The second line will contain the sha1 key of the parent block.
+The second part will contain the data{sender, receiver, amount}
 
-Here, we must talk about the data stored, what is going to happen... An entire part will be dedicated.
+The third part will have previous cheese hash.
 
-The line after the data will correspond to the proof of work.
-
-The last line corresponds  to the sha1 key of this file before adding this line ðŸ¤¯.
+The last part will have current cheese hash
 
 ### Data
 
