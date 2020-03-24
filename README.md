@@ -37,7 +37,7 @@ The main focus of this project concerned implementing a blockchain using a P2P n
 
 ## Architecture
 
-### Client console
+## Client console
 
 - when the * start client * button  is clicked on in the GUI the `start_clt()` function is executed in the * ClientConsol.py *  file. On the * client.py *  file, this initializes all the cheese and cheese chains.The next function that is called upon clicking this button `clt.startListerning()` , this function points to the `startListening()` function in *client.py* . This function creates a socket and binds itself and starts listening for connections. This function has 2 threads:
     - listenerThread - listens for the `startListerning()`  function
