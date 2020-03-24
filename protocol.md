@@ -2,7 +2,6 @@
 
 The following is a detailed  description of the protocol used to implement a blockchain in a peer-to-peer environment through means of a tracker.
 
-CURRENTLY, NOTHING IS FIXED, AS IT IS THE FIRST DRAFT OF THE PROTOCOLE.
 
 ## Network
 
@@ -10,27 +9,26 @@ CURRENTLY, NOTHING IS FIXED, AS IT IS THE FIRST DRAFT OF THE PROTOCOLE.
 A message will take the following format :
 
 ```
-|l|dddd|the content of the message you want to send.
+|l|the content of the message you want to send.
 ```
 
-`|l|dddd|` is the header, its size is fixed: 8 bytes.
+`|l|` is the header, its size is fixed: 3 bytes.
 
 `l` is a letter that will indicate the expected action to the receiving  side. Example: `p` would be a ping, `b`  for sending a block etc.
 
-`dddd` corresponds to the length of the message following the header. Example:  "Hello"  will be represented as 0005.
 
-|letter|meaning    |structure of the associated message|description|
-|------|-----------|-----------------------------------|-----------|
-|s     |server     |example: 127.0.0.1:8000            |The tracker (server) sends a valid IP address to the client. It sends all the known IP addresses to the new client, however each of them are sent in a new message.|
-|b     |block      |a block (bytes)                    |A block sent by a peer.|
-|r     |request    |ID                                 |The ID of the block requested by a peer from another peer. The expected answer is a `b`.|
-|e     |error      |Error message                      |The description of an error|
-|t     |transaction|To be defined                      |Transaction between users. |
-|n     |transaction|To be defined                      |Transaction between users. 
-
-
-
-
+|letter|meaning          |structure of the associated message|description|
+|------|-----------------|-----------------------------------|-----------|
+|J     |Join Network     |example: 127.0.0.1:8000            |The tracker (server) sends a valid IP address to the client. It sends all the known IP addresses to the new client, however each of them are sent in a new message.|
+|C     |Client List            |a block (bytes)                    |A block sent by a peer.|
+|P     |Ping          |ID                                 |The ID of the block requested by a peer from another peer. The expected answer is a `b`.|
+|T     |Transmit Cheese            |Error message                      |The description of an error|
+|R     |Receive Cheese      |To be defined                      |Transaction between users. |
+|O     |Okay      |To be defined                      |Transaction between users. 
+|E     |End
+|D     |Drop Cheese
+|I     |Invalid Cheese
+|N     |None received
 ### The Tracker
 
 There are two possibilities on connection:
