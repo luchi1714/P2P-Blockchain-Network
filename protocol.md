@@ -73,5 +73,4 @@ The last part will have current cheese hash
 
 ### Data
 
-Nothing done at the moment.
-
+Encrypted in the block with the sha1 hash
