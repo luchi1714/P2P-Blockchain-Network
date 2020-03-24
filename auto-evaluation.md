@@ -10,7 +10,7 @@
 - Protocol codes eg|P| to indicate delivery  works 
 
 ### What doesnt work
-- Cheese chain has issues updating propely if two clients don't start at the same time. 
+- If a particular client lags behind there is no contingency to update the status of the client
 - Longest chain in the sequence not considered 
 - Every client starts mining immediately there is no configuration to switch to a transactor without being a miner the program.
 

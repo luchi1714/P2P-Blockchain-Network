@@ -25,8 +25,7 @@ For the development of this project we used our variation of the Extreame progra
 -Understanding of P2P networking 
 - Better understanding of Git 
 
-## Possile future updates
-### Functionality improvements:
+## Possible future updates
 - When a particular client does not receive the latest cheese it just drops there next step is to request blocks of particular id's
 - Same case when received an invalid block there is no contingency in place to keep up so a contingency plan should be inplace to handle these
 - Make the peer also exchange a set of “recent transactions” that are transactions that are not yet written into a block. When mining, the member try to mine a block containing all the current transactions.
@@ -35,8 +34,6 @@ For the development of this project we used our variation of the Extreame progra
 - When a member receives a list of other members and tries to connect to them, if a connection problem happens, it can “complain” to the tracker. The tracker can then trigger the “liveliness” test on this peer, leading to a faster cleanup of its members list.
 
 - Instead of hard-coding a lot of information, have a cheese stack descriptor file which lists the content of the ReblochonCheese, the difficulty of the blockchain, etc. This file could also contain the address of the tracker and could be send (for example by email) to new users.
-
-
 
 ## Things we would have done differently
 - Not understimating how challenging the P2P implimentation section would be 
