@@ -1,0 +1,9 @@
+# Logs and databases #
+*.log
+*.idea
+
+# Packages #
+
+*.rar
+*.tar
+*.zip

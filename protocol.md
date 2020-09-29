@@ -2,7 +2,6 @@
 
 The following is a detailed  description of the protocol used to implement a blockchain in a peer-to-peer environment through means of a tracker.
 
-CURRENTLY, NOTHING IS FIXED, AS IT IS THE FIRST DRAFT OF THE PROTOCOLE.
 
 ## Network
 
@@ -10,71 +9,67 @@ CURRENTLY, NOTHING IS FIXED, AS IT IS THE FIRST DRAFT OF THE PROTOCOLE.
 A message will take the following format :
 
 ```
-|l|dddd|the content of the message you want to send.
+|l|the content of the message you want to send.
 ```
 
-`|l|dddd|` is the header, its size is fixed: 8 bytes.
+`|l|` is the header, its size is fixed: 3 bytes.
 
 `l` is a letter that will indicate the expected action to the receiving  side. Example: `p` would be a ping, `b`  for sending a block etc.
 
-`dddd` corresponds to the length of the message following the header. Example:  "Hello"  will be represented as 0005.
 
-|letter|meaning    |structure of the associated message|description|
-|------|-----------|-----------------------------------|-----------|
-|s     |server     |example: 127.0.0.1:8000            |The tracker (server) sends a valid IP address to the client. It sends all the known IP addresses to the new client, however each of them are sent in a new message.|
-|b     |block      |a block (bytes)                    |A block sent by a peer.|
-|r     |request    |ID                                 |The ID of the block requested by a peer from another peer. The expected answer is a `b`.|
-|e     |error      |Error message                      |The description of an error|
-|t     |transaction|To be defined                      |Transaction between users. 
-
-
-
+|letter|Abrevation          |Who sends it     |Who receives it   |Usage      |content of msg    |Meaning                                                            |Format of the message          |
+|------|--------------------|-----------------|------------------|-----------|------------------|-------------------------------------------------------------------|-------------------------------|
+|J     |Join Network        |Client           |Tracker           |Once       |None              |to join the network                                                |list as ip and port            |
+|C     |Client List         |Tracker          |Client            |multiple   |List of clients   |contains list of active clients.                                   |list of clients ip:port        |
+|P     |Ping                |Tracker          |Client            |multiple   |\r\n              |to check if a client is active                                     |string                         |
+|T     |Transmit Cheese     |Client           |Client            |multiple   |Cheese            |Sending cheese                                                     |python object using pickle     |
+|R     |Receive Cheese      |Client           |Client            |multiple   |Cheese            |Receiving cheese                                                   |python object using pickle     |
+|O     |Okay                |Tracker,Client   |Tracker,Client    |multiple   |None              |to let if the cheese is okay                                       |string                         |
+|E     |End                 |Tracker          |Client            |multiple   |None              |end of the client list                                             |string                         |
+|D     |Drop Cheese         |Client           |Client            |multiple   |None              |to let other clients that this client dropped cheese               |string                         |
+|I     |Invalid Cheese      |Client           |Client            |multiple   |None              |to let other clients know that we received invalid cheese          |string                         |
+|N     |None received       |Client           |Client            |multiple   |None              |a way to tell other clients we dont have what you are looking for  |string                         |
 ### The Tracker
 
-There are two possibilities on connection:
-- Client's IP address is obtained directly from the server: in this case the communication carries on as usual. 
-- Client's IP address isn't obtained: in this case the tracker must ask the client for an IP address. The client first sends a message with its' IP address and a connection is then opened by the tracker with the given address to verify  its' validity. The stream finally opens with the sent IP address as the main stream (if everything is ok).
+There is only one possibility of connection:
+- Peer IP's addresses are obtained directly from the tracker maximum of 5(as default but can be changed): then client connects to these maximum number of clients . 
 
 Tracker sends the IP address to the newly connected client.
 
 ### Peers
 If a peer requests a block, the other peer can answer by sending the requested block if it has it. Otherwise, it will send :
 ```
-|b|0000|
+|T|
 ```
 This means a peer does not have the block requested.
 
-When a peer finished mining, it sends a `b` message to every connected peers with the new block.
+When a peer finished mining, it sends a `|N|` message to every connected peers with the new block.
 
 ### Malicious peers detection
 
 What is considered as malicious:
-- Invalid block
-- Invalid message
+- Invalid Cheese |I|
 
 A peer will be disconnected from the other side of the connection.
 
 
 ## Blockchain
 
-Each block will be stored in a separate  file:
+whole block chain will be stored in a file:
 ```
-block_id.blk
+port_number.blk
 ```
-The `ID` must be replaced by the number of the block.
+The `port_number` corresponds to the port number of the client.
 
 ### Block file
-The first line of the file will contain the ID of the block (identical to the one found in the file name).
+The first part of the file will contain the ID of the block (identical to the one found in the file name).
 
-The second line will contain the sha1 key of the parent block.
+The second part will contain the data{sender, receiver, amount}
 
-Here, we must talk about the data stored, what is going to happen... An entire part will be dedicated.
+The third part will have previous cheese hash.
 
-The line after the data will correspond to the proof of work.
-
-The last line corresponds  to the sha1 key of this file before adding this line ðŸ¤¯.
+The last part will have current cheese hash
 
 ### Data
 
-Nothing done at the moment.
-
+Encrypted in the block with the sha1 hash
